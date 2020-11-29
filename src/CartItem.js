@@ -8,6 +8,7 @@ const CartItem = (props) => {
     onDecreaseQuantity,
     onDeleteProduct
   } = props;
+  
   return (
     <div className="cart-item">
       <div className="left-block">
