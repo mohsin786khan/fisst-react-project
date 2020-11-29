@@ -8,11 +8,10 @@ const CartItem = (props) => {
     onDecreaseQuantity,
     onDeleteProduct
   } = props;
-  
   return (
     <div className="cart-item">
       <div className="left-block">
-        <img style={styles.image} />
+        <img style={styles.image} src={product.img} />
       </div>
       <div className="right-block">
         <div style={ { fontSize: 25 } }>{title}</div>
@@ -54,4 +53,3 @@ const styles = {
 }
 
 export default CartItem;
-
