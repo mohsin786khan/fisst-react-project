@@ -32,16 +32,21 @@ class App extends React.Component {
   // }
 
   componentDidMount() {
-    this.db.collection("products").onSnapshot(snapshot => {
-      const products = snapshot.docs.map(doc => {
-        const data = doc.data();
-        data["id"] = doc.id;
-        return data;
+    this.db
+    .collection("products")
+     // .where("price", "==", 999)
+      // .where("title", "==", "Mug")
+      .orderBy("price", "desc")
+      .onSnapshot(snapshot => {
+        const products = snapshot.docs.map(doc => {
+          const data = doc.data();
+          data["id"] = doc.id;
+          return data;
+        });
+        this.setState({ products: products, loading: false });
       });
-      this.setState({ products: products, loading: false });
-    });
-  }
-
+  
+    }
   
   handleIncreaseQuantity = (product) => {
     console.log('Heyy please inc the qty of ', product);
