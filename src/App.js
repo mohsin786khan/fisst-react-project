@@ -2,6 +2,7 @@ import React from 'react';
 import Cart from './Cart';
 import Navbar from './Navbar';
 import firebase from 'firebase';
+import './index.css'
 
 class App extends React.Component {
 
@@ -47,35 +48,74 @@ class App extends React.Component {
     const { products } = this.state;
     const index = products.indexOf(product);
 
-    products[index].qty += 1;
+    // products[index].qty += 1;
 
-    this.setState({
-      products
-    })
+    // this.setState({
+    //   products
+    // });
+    
+    const docRef = this.db.collection("products").doc(products[index].id);
+
+    docRef
+      .update({ qty: products[index].qty + 1 })
+      .then(() => {
+        console.log("Document updated sucessfully");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      
   }
+
+
   handleDecreaseQuantity = (product) => {
     console.log('Heyy please inc the qty of ', product);
     const { products } = this.state;
     const index = products.indexOf(product);
 
     if (products[index].qty === 0) {
-      return;
+      return ;
     }
 
-    products[index].qty -= 1;
+    // products[index].qty -= 1;
 
-    this.setState({
-      products
-    })
+    // this.setState({
+    //   products
+    // });
+
+    const docRef = this.db.collection("products").doc(products[index].id);
+
+    docRef
+      .update({ qty: products[index].qty - 1 })
+      .then(() => {
+        console.log("Document updated sucessfully");
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
+
   handleDeleteProduct = (id) => {
-    const { products } = this.state;
+  //  const { products } = this.state;
+    
+    const docRef = this.db.collection("products").doc(id);
 
-    const items = products.filter((item) => item.id !== id); // [{}]
+    docRef
+      .delete()
+      .then(() => {
+        console.log("Deleted sucessfully");
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
-    this.setState({
-      products: items
-    })
+    // const items = products.filter((item) => item.id !== id); // [{}]
+
+    // this.setState({
+    //   products: items
+    // })
+
+
   }
 
   getCartCount = () => {
@@ -110,7 +150,7 @@ class App extends React.Component {
     this.db
       .collection("products")
       .add({
-        img: "https://5.imimg.com/data5/NA/GI/JG/SELLER-80243809/6-8kg-suntek-washing-machine-500x500.jpg",
+        img: "",
         price: 900,
         qty: 3,
         title: "Washing Machine"
@@ -130,9 +170,9 @@ class App extends React.Component {
     return (
       <div className="App">
         <Navbar count={this.getCartCount()} />
-        <button onClick={this.addProduct} style={{ padding: 20, fontSize: 20 }}>
+        {/* <button onClick={this.addProduct} style={{ padding: 20, fontSize: 20 }}>
           Add a Product
-        </button>
+        </button> */}
         <Cart
           products={products}
           onIncreaseQuantity={this.handleIncreaseQuantity}
